@@ -1,0 +1,210 @@
+\documentclass[a4paper,footsepline]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+%##### English
+\usepackage[english]{fancyref}
+\usepackage[USenglish]{babel}
+
+%#### Deutsch
+%\usepackage[ngerman]{babel}
+%\usepackage[german]{fancyref}
+
+%#### Usepackage #####
+
+\usepackage{uepage} 
+\usepackage{amssymb}
+
+\usepackage{courier}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{wasysym}
+\usepackage{framed}
+\usetikzlibrary{arrows}
+
+\newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
+
+\areaset{15cm}{26cm}
+
+%#### Title page #####
+\title{Cyber Physical Systems: Stochastic foundations UE}
+\subject{Excercise 1}
+
+\author{
+	\authorname{Mathias Lechner and Benjamin Binder} \\
+	\studentnumber{1225134, 1226121} \\
+	\curriculum{066 938}\\
+	\email{e1225134@student.tuwien.ac.at, e1226121@student.tuwien.ac.at}\\\\
+}
+\date{\today}
+
+
+%### Start of Document
+\begin{document}
+	
+	\maketitle
+	\section*{Task 1.1: Intelligent Agents}
+	A robot, equipped with several sensors, should autonomously navigate through a world. A
+	start and goal position will be given. The world only contains static objects, i.e., the only
+	moving object is the robot.\\
+	A mars rover should transport goods between two base stations. The rover is the only one of its kind on mars, i.e. no other movable object is assumed to be encountered on its mission.  The rover has four wheels, each equipped with a electrical motor and a brake.
+	The front-axie is used for steering and the steering is controlled by a motor. The world consists of sandy  terrain and craters, the robot should not drive into a crater. Close to the two base stations, space ships and other static objects are placed and should avoided. The robot is equipped with state of the art sensors for autonomous driving. The robot is connected to a satellite which monitors the trip of the rover and may send correction data of the position of the rover.
+	\begin{description}
+		\item[Performance measure]
+		Reach goal position
+		\item[Environment]
+		Sandy terrain, craters, Static objects
+		\item[Actuators]
+		Motors for acceleration and steering angle, brake
+		\item[Sensors]
+		INS, position from satellite, Lidar, Camera, Wheel rotation, Steering angle
+	\end{description}
+	\vspace{0.3cm}
+	\begin{tabular}{|lr|lr|}\hline
+		fully observable & \Square & partially observable & \CheckedBox \\\hline
+		single agent & \CheckedBox & multiple agent & \Square \\\hline
+		deterministic & \Square & stochastic & \CheckedBox \\\hline
+		static  & \CheckedBox & dynamic & \Square \\\hline
+		discrete & \Square & continuous & \CheckedBox \\\hline
+	\end{tabular}
+	\section*{Task 1.2: Stochastic Basics - Discrete Random Variables}
+	a) Show that $P(a | b \land a) = 1$
+	\begin{align*}
+	P(a | b \land a) & = \frac{P(\{b \land a\} \cap a)}{P(b \land a)}\\
+	& = \frac{P(b \land a)}{P(b \land a)}\\
+	& = 1
+	\end{align*}
+	\vspace{0.4cm}\\
+	b) Prove that if two random variables x and y are independent (denoted by x $\bot$ y), they are
+	also uncorrelated.
+	\vspace{0.1cm}\\
+	First we will compute the correlation $R_{x,y}$ of $x$ and $y$:
+	\begin{align*}
+		R_{x,y} &= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  x y f_{x,y}(x,y)\ \text{d} x\ \text{d} y\\
+		&= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  x y f_x(x) f_y(y)\ \text{d} x\ \text{d} y\\
+		&= \int_{-\infty}^{\infty} y f_y(y) \underbrace{ \int_{-\infty}^{\infty}  x f_x(x) \ \text{d} x}_{= \mu_x} \ \text{d} y\\
+		&= \int_{-\infty}^{\infty} y f_y(y)\mu_x\ \text{d} y\\
+		&= \mu_x \underbrace{\int_{-\infty}^{\infty} y f_y(y)\ \text{d} y}_{= \mu_y}\\
+		&= \mu_x \mu_y
+	\end{align*}
+	So we get the covariance: $C_{x,y} = R_{x,y} - \mu_x \mu_y =0$, \\
+	 thus  $x$ and $y$ are uncorrelated.
+	 \vspace{0.4cm}\\
+	c) Give an example where two random variables x and y are uncorrelated but not independent.
+	\vspace{0.1cm}\\
+	Let $x,y$ be two discrete random variables with probability: 
+	\begin{align*}
+		P(0,1) &= \frac{1}{2}\\
+		P(1,-1) &= \frac{1}{4}\\
+		P(-1,-1) &= \frac{1}{4}
+	\end{align*}
+	Obviously $\mu_x = \mu_y = 0$.
+	With correlation:
+	\begin{align*}
+	R_{x,y} &= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  x y f_{x,y}(x,y)\ \text{d} x\ \text{d} y\\
+	&= 0 \cdot 1 \cdot \frac{1}{2} + 1 \cdot (-1) \cdot \frac{1}{4} + (-1) \cdot (-1) \cdot \frac{1}{4}\\
+	&= - \frac{1}{4} +  \frac{1}{4}\\
+	&= 0
+	\end{align*}
+	which equals $\mu_x \cdot \mu_y$, i.e. $x$ and $y$ are uncorrelated.\\
+	But $x$ and $y$ are not independent, shown by the counterexample:
+	\[ f_{x,y}(0,1) = \frac{1}{2} \]
+	\[ f_x(0) \cdot f_y(1) = \frac{1}{2} \cdot \frac{1}{2} =\frac{1}{4}  \]
+	\vspace{0.4cm}\\
+	d) If $x$ and $y$ are normally distributed and independent with the same variance ($x \sim  \mathcal{N}(\mu_x, \sigma)$ and $y \sim  \mathcal{N}(\mu_x, \sigma)$ and $x \bot y$), prove that $x-y$ and $x+y$ are independent.
+	\vspace{0.2cm}\\
+	We have the covariance matrix of $x$ and $y$ of:
+	\begin{align*}
+		C_{x,y} &= \vect{\sigma_x^2 & C_{x,y}\\C_{y,x} & \sigma_y^2}\\
+		&=\vect{\sigma^2 & 0 \\0 & \sigma^2}
+	\end{align*}
+	Note: $C_{x,y} = C_{y,x} = 0$ because $x$ and $y$ are independent.\vspace{0.2cm}\\
+	Let $v = x + y$ and $w=x-y$, i.e. we get the linear transformation matrix $A$:
+	\[ \vect{v\\w} = \vect{ 1 & 1 \\ 1 & -1} \cdot \vect{x\\y} \] 
+	Thus giving us the transformed covariance matrix:
+	\begin{align*}
+		C_{v,w} &= A\ C_{x,y}\ A^T\\
+		&= \vect{ 1 & 1 \\ 1 & -1}\ \vect{\sigma^2 & 0 \\0 & \sigma^2}\ \vect{1 & 1\\1 & -1}\\
+		&= \vect{\sigma^2 & \sigma^2\\\sigma^2 & -\sigma^2} \ \vect{1 & 1\\1 & -1}\\
+		&= \vect{2 \sigma^2 & 0\\0 & 2 \sigma^2}
+	\end{align*}
+	Thus, $v$ and $w$ are uncorrelated.\\
+	Next we will use the two theorems two show independence:\\
+	\begin{framed}
+		1) A linear transformed normal distributed and independent vector is also normally distributed (but not necessarily independent).
+	\end{framed}
+	\begin{framed}
+		2) For two jointly normal distributed variables it hold that: Independent = Uncorrelated
+	\end{framed}
+	Thus $\vect{v\\w}$ is a uncorrelated normal distributed vector, therefore $v$ and $w$ are independent.
+	\section*{Task 1.3: Stochastic Basics - Continuous Random Variables}
+	The random variable $t$ represents the duration until system $S$ fails. The probability density
+	function (pdf) $f_t(t)$ is:
+	\[f_t(t) = \begin{cases} 
+	\lambda e^{-\alpha t} & t \geq 0\\
+	0 & t < 0
+	\end{cases} \qquad \text{where } \alpha=\frac{1}{5 \text{ years}} \]
+	a) Calculate $\lambda$, sketch the pdf $f_t(t)$ and give the cdf.
+	\begin{align*}
+		\int_{-\infty}^{\infty} f_t(t) &= 1\\
+		\int_{0}^{\infty} \lambda e^{-\alpha t} &= 1\\
+		\Big[ \lambda \frac{e^{-\alpha t}}{- \alpha}\Big]_0^\infty &= 1 \\
+		\lambda \frac{e^{-\alpha \infty}}{- \alpha} - 	\lambda \frac{e^{-\alpha 0}}{- \alpha} &= 1 \\
+		\lambda \frac{1}{\alpha} &= 1 \\
+		\lambda &= \alpha
+	\end{align*}
+	\includegraphics[width=\textwidth]{sketch.png}
+	\begin{align*}
+	F_{t \geq 0}(t) &= \int_{0}^{t} f_t(\tau)\ \text{d} \tau \\
+	&= \int_{0}^{t} \alpha e^{-\alpha \tau}\ \text{d} \tau\\
+	&= 	\Big[ \alpha \frac{e^{-\alpha \tau}}{- \alpha}\Big]_0^t\\
+	&= - e^{-\alpha t} + e^{-\alpha 0}\\
+	&= 1-e^{-\alpha t}
+	\end{align*}
+	Altogether:
+	\[ F_t(t) = \begin{cases} 1-e^{-\alpha t} & t \geq 0\\
+	0 & t < 0
+	\end{cases} \]
+	\vspace{0.4cm}\\
+	b) Calculate the Mean Time To Failure (MTTF) of system S.\\
+	\begin{align*}
+		\mu_t &= \int_{-\infty}^{\infty} t\ f_t(t)\ \text{d} t\\
+		&= \int_{0}^{\infty} t\ \alpha\ e^{-\alpha t}\ \text{d} t\\
+		&= \Big[ t\ \alpha\  \frac{e^{-\alpha t}}{- \alpha}  \Big]_0^\infty - \int_{0}^{\infty} \alpha\ \frac{e^{-\alpha t}}{- \alpha}\ \text{d} t\\
+		&=  \lim\limits_{t \rightarrow \infty} - t\  e^{-\alpha t} + 0\ e^{- \alpha\ 0} - \big[ \frac{e^{-\alpha t}}{\alpha}\ \Big]_0^\infty \\
+		&= - \lim\limits_{t \rightarrow \infty} \frac{e^{-\alpha t}}{\alpha}  + \frac{e^{-\alpha 0}}{\alpha}\\
+		&= \frac{1}{\alpha}\\
+		&= 5 \text{ years}
+	\end{align*}
+	c) Calculate the probability that system $S$ does not fail in the first 3 years.\\
+	\begin{align*}
+	 P(t \geq 3) & = 1 - P(t < 3) = 1 - F_t(3) \\
+	 &= 1 - 1  + e^{-\alpha 3}\\
+	 &= e^{-\frac{3}{5}} \\
+	 & \approx 55\%
+	\end{align*}
+	d) What is the probability that system $S$ didn’t fail within the first 3 years, but does so
+	between 5 and 7 years?
+	\begin{align*}
+		P(t \geq 3| 5 \leq t \leq 7) &= \frac{P(\{t \geq 3\}  \cap \{5 \leq t \leq 7\}) }{P(5 \leq t \leq 7)}\\
+		&= \frac{P(5 \leq t \leq 7)}{P(5 \leq t \leq 7)}\\
+		&= 1
+	\end{align*}
+	e) System S has been upgraded. The new system $S$ cannot fail in the first 3 years anymore,
+	but it might fail exactly after 3 years with the probability p. After this point the time
+	to failure behaves as before.\\
+	i) What is the probability $p$?\\
+	\[ p = 1 - P(t > 3) = P(t \leq 3) = F_t(3) = 1 - e^{-\frac{3}{5}} \approx 0.45119 \dots \]
+	ii) Give a pdf $f_ x(x)$ that models failure over time of the upgraded system. Also sketch
+	the pdf of $x$.\\
+	\[f_t(t) = \begin{cases} 
+	p\ \delta(t-3) + \lambda e^{-\alpha t} & t \geq 3\\
+	0 & t < 3
+	\end{cases} \qquad \text{where } \delta(t) \text{ is the dirac distribution} \]
+	\includegraphics[width=\textwidth]{sketch2.png}
+	\section*{Task 1.4: Bayes Nets - Conditional Probabilities}
+\end{document}
