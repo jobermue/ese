@@ -190,9 +190,12 @@
 	d) What is the probability that system $S$ didn’t fail within the first 3 years, but does so
 	between 5 and 7 years?
 	\begin{align*}
-		P(t \geq 3| 5 \leq t \leq 7) &= \frac{P(\{t \geq 3\}  \cap \{5 \leq t \leq 7\}) }{P(5 \leq t \leq 7)}\\
-		&= \frac{P(5 \leq t \leq 7)}{P(5 \leq t \leq 7)}\\
-		&= 1
+		P(5 \leq t \leq 7 | t \geq 3) &= \frac{P(\{5 \leq t \leq 7\} \cap \{t \geq 3\} ) }{P(t \geq 3)}\\
+		&= \frac{P(5 \leq t \leq 7)}{P(t \geq 3)}\\
+		&= \frac{F_t(7) - F_t(5)}{1-F_t(3)}\\
+		&= \frac{\big(1-e^{-\frac{7}{5}}\big) - \big(1-e^{-\frac{5}{5}}\big)}{1-\big(1-e^{-\frac{3}{5}}\big)}\\
+		&= \frac{e^{-\frac{5}{5}}-e^{-\frac{7}{5}}}{e^{-\frac{3}{5}}}\\
+		&\approx 22\%
 	\end{align*}
 	e) System S has been upgraded. The new system $S$ cannot fail in the first 3 years anymore,
 	but it might fail exactly after 3 years with the probability p. After this point the time
@@ -206,5 +209,18 @@
 	0 & t < 3
 	\end{cases} \qquad \text{where } \delta(t) \text{ is the dirac distribution} \]
 	\includegraphics[width=\textwidth]{sketch2.png}
+	iii) Repeat subtask d) for the upgraded system.\vspace{0.2cm}\\
+	What has changed is that $P(t < 3)=0$ which implies that:\\ 
+	\[P(t \geq 3) = 1-P(t < 3) = 1-0 =1\]
+	For the conditional probability that gives us:
+	\begin{align*}
+	P(5 \leq t \leq 7 | t \geq 3) &= \frac{P(\{5 \leq t \leq 7\} \cap \{t \geq 3\} ) }{P(t \geq 3)}\\
+	&= \frac{P(5 \leq t \leq 7)}{1}\\
+	&= P(5 \leq t \leq 7)\\
+	&= F_t(7) - F_t(5)\\
+	&=\big(1-e^{-\frac{7}{5}}\big) - \big(1-e^{-\frac{5}{5}}\big)\\
+	&= e^{-\frac{5}{5}}-e^{-\frac{7}{5}}\\
+	&\approx 12\%
+	\end{align*}
 	\section*{Task 1.4: Bayes Nets - Conditional Probabilities}
 \end{document}
