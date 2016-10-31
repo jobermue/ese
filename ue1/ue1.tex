@@ -24,7 +24,9 @@
 \usepackage{tikz}
 \usepackage{wasysym}
 \usepackage{framed}
-\usetikzlibrary{arrows}
+\usetikzlibrary{arrows, automata}
+\usepackage{ marvosym }
+
 
 \newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
 
@@ -45,6 +47,37 @@
 
 %### Start of Document
 \begin{document}
+
+\newcommand{\fcl}[1]{{\footnotesize#1\vspace{0.4cm}\\}}
+\newcommand{\fclc}[2]{{\footnotesize#1\hspace{0.4cm}{\footnotesize #2}\vspace{0.4cm}}\\}
+\newcommand{\mmatrix}[1]{\left [ \begin{matrix}#1\end{matrix} \right ]}
+\newcommand{\SpaceEx}[0]{\textsc{SpaceEx} }
+
+%% vector
+\newcommand{\vc}[1]{\ensuremath{\boldsymbol{\lowercase{#1}}}}
+
+%% matrix
+\newcommand{\mt}[1]{\ensuremath{\boldsymbol{\uppercase{#1}}}}
+
+%% random vector
+\newcommand{\rvc}[1]{\ensuremath{\text{\sffamily\bfseries\lowercase{#1}}}}
+
+%% random matrix
+\newcommand{\rmt}[1]{\ensuremath{\text{\sffamily\bfseries\uppercase{#1}}}}
+
+%% random variable
+\newcommand{\rv}[1]{\ensuremath{\text{\sffamily\lowercase{#1}}}}
+
+%\newcommand{\rv}[1]{\mathrm{#1}}
+%\newcommand{\rvv}[1]{\bm{\mathrm{#1}}}
+\newcommand{\dv}[1]{\mathit{#1}}
+\newcommand{\dvv}[1]{\bm{\mathit{#1}}}
+\newcommand{\pdf}[1]{f_\rv{#1}(\dv{#1})}
+\newcommand{\pdfa}[2]{f_\rv{#1}(\dv{#2})}
+%\newcommand{\cdf}[1]{F_\rv{#1}(\dv{#1})}
+\newcommand{\cdf}[2]{F_\rv{#1}(\dv{#2})}
+\newcommand{\prob}[1]{\mathrm{P}\{#1\}}
+\newcommand{\pmf}[1]{p_\rv{#1}(\dv{#1})}
 	
 	\maketitle
 	\section*{Task 1.1: Intelligent Agents}
@@ -223,4 +256,66 @@
 	&\approx 12\%
 	\end{align*}
 	\section*{Task 1.4: Bayes Nets - Conditional Probabilities}
+	In your local nuclear power station, there is an alarm that senses when a
+temperature gauge exceeds a given threshold. The gauge measures the temperature
+of the core. Consider the Boolean variables $\rv{a}$ (alarm sounds), $\rv{f}_a$
+(alarm is faulty), and $\rv{f}_g$ (gauge is faulty) and the continuous
+variables $\rv{g}$ (gauge reading) and $\rv{t}$ (actual core temperature).
+
+a) Draw a Bayesian network for this domain, given that the gauge is more
+  likely to fail when the core temperature gets too high.
+	\begin{figure}[h]
+	 \centerline{
+		\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=4cm]
+		  \node[state] (t)    at (3,0)       {t};
+		  \node[state] (f_g)   at (4.5,-1)      {f$_g$};
+		  \node[state] (g)   at (3,-2)       {g}; %node at (4,0.9) {$p_0 \in CS$};
+		  \node[state] (f_a) at (4.5,-3) {f$_a$};
+		  \node[state] (a) at (3,-4) {a};
+		  \path[->]  (t)  edge (g);
+		  \path[->]  (t)  edge (f_g);
+		  \path[->]  (f_g)  edge (g);
+		  \path[->]  (g)  edge (a);
+		  \path[->]  (f_a)  edge (a);
+		\end{tikzpicture}
+	  }
+	  \caption{Bayesian network for the given domain}
+	  \label{fig:bayes}
+	\end{figure}
+
+b) Suppose there are just two possible actual and measured temperatures,
+  $normal$ and $high$; the probability that the gauge gives the correct
+  temperature is $x$ when it is working, but $y$ when it is faulty. Give the
+  conditional probability table associated with $\rv{g}$.
+
+	\vspace{0.5cm}
+	\begin{tabular}{|c|c|c|c|}\hline
+		$\rv{f}_g$ & $\rv{t}$ &  $\rv{g}$  & $P(\rv{g}|\rv{f}_g,\rv{t})$ \\\hline
+		false      & $normal$ &  $normal$  & x \\\hline
+		false      & $high$   &  $high$    & x \\\hline
+		true       & $normal$ &  $normal$  & y \\\hline
+		true       & $high$   &  $high$    & y \\\hline
+	\end{tabular}
+	\vspace{0.5cm}
+
+c) Suppose the alarm works correctly unless it is faulty, in which case it
+  never sounds. Give the conditional probability table associated with
+  $\rv{a}$.
+  
+  	\vspace{0.5cm}
+  	\begin{tabular}{|c|c|c|c|}\hline
+		$\rv{f}_a$ & $\rv{g}$   &  $\rv{a}$ & $P(\rv{a}|\rv{f}_a,\rv{g})$ \\\hline
+		false      & $normal$   &  false    & x \\\hline
+		false      & $high$     &  true     & x \\\hline
+		true       & $normal$   &  false    & y \\\hline
+		true       & $high$     &  false    & y \\\hline
+	\end{tabular}
+	\vspace{0.5cm}
+
+d) Suppose the alarm and gauge are working and the alarm sounds. Calculate
+  an expression for the probability that the temperature of the core is too
+  high, in terms of the various conditional probabilities in the network.
+
+
+	
 \end{document}
