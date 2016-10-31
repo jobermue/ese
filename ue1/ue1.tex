@@ -290,7 +290,7 @@ b) Suppose there are just two possible actual and measured temperatures,
 
 	\vspace{0.5cm}
 	\begin{tabular}{|c|c|c|c|}\hline
-		$\rv{f}_g$ & $\rv{t}$ &  $\rv{g}$  & $P(\rv{g}|\rv{f}_g,\rv{t})$ \\\hline
+		$\rv{f}_g$ & $\rv{t}$ &  $\rv{g}$  & $\prob{\rv{g}|\rv{f}_g,\rv{t}}$ \\\hline
 		false      & $normal$ &  $normal$  & x \\\hline
 		false      & $high$   &  $high$    & x \\\hline
 		true       & $normal$ &  $normal$  & y \\\hline
@@ -304,7 +304,7 @@ c) Suppose the alarm works correctly unless it is faulty, in which case it
   
   	\vspace{0.5cm}
   	\begin{tabular}{|c|c|c|c|}\hline
-		$\rv{f}_a$ & $\rv{g}$   &  $\rv{a}$ & $P(\rv{a}|\rv{f}_a,\rv{g})$ \\\hline
+		$\rv{f}_a$ & $\rv{g}$   &  $\rv{a}$ & $\prob{\rv{a}|\rv{f}_a,\rv{g}}$ \\\hline
 		false      & $normal$   &  false    & x \\\hline
 		false      & $high$     &  true     & x \\\hline
 		true       & $normal$   &  false    & y \\\hline
@@ -316,6 +316,15 @@ d) Suppose the alarm and gauge are working and the alarm sounds. Calculate
   an expression for the probability that the temperature of the core is too
   high, in terms of the various conditional probabilities in the network.
 
-
+	\begin{align*} 
+	\prob{t|\neg f_g, \neg f_a, a} &= \frac{\prob{t,\neg f_g, \neg f_a, a}}{\prob{\neg f_g, \neg f_a, a}} \\
+	&= \frac{1}{\prob{\neg f_g, \neg f_a, a}} \cdot \sum_g \prob{t,\neg f_g, \neg f_a, a, G} \\
+	&= \frac{1}{\prob{\neg f_g, \neg f_a, a}} \cdot \left( \prob{t,\neg f_g, \neg f_a, a, g} + \prob{t,\neg f_g, \neg f_a, a, \neg g} \right) \\
+	&= \frac{1}{\prob{\neg f_g, \neg f_a, a}} \cdot ( \prob{a | g, \neg f_a} \prob{g|t, \neg f_g} \prob{t} \prob{\neg f_a} \prob{\neg f_g | t}  \\
+                                             & \hspace{3cm} + \prob{a | \neg g, \neg f_a} \prob{\neg g|t, \neg f_g} \prob{t} \prob{\neg f_a} \prob{\neg f_g | t} ) \\
+	&= \frac{1}{\prob{\neg f_g, \neg f_a, a}} \cdot ( 1 \cdot x \cdot \prob{t} \prob{\neg f_a} \prob{\neg f_g | t}  \\
+                                             & \hspace{3cm} + 0 \cdot (1-x) \cdot \prob{t} \prob{\neg f_a} \prob{\neg f_g | t} ) \\
+	&= \frac{x \cdot \prob{t} \prob{\neg f_a} \prob{\neg f_g | t}}{\prob{\neg f_g, \neg f_a, a}} \\
+	\end{align*}
 	
 \end{document}
