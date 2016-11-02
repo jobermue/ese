@@ -37,10 +37,12 @@
 \subject{Excercise 1}
 
 \author{
-	\authorname{Mathias Lechner and Benjamin Binder} \\
-	\studentnumber{1225134, 1226121} \\
+	\authorname{Mathias Lechner, Benjamin Binder} \\
+	\authorname{Johannes Obermüller, Lukas Hartung} \\
+	\studentnumber{1225134, 1226121, 1126799} \\
 	\curriculum{066 938}\\
-	\email{e1225134@student.tuwien.ac.at, e1226121@student.tuwien.ac.at}\\\\
+	\email{e1225134@student.tuwien.ac.at, e1226121@student.tuwien.ac.at}\\
+	\email{e1126799@student.tuwien.ac.at}\\\\
 }
 \date{\today}
 
@@ -185,38 +187,38 @@
 	\begin{align*}
 		\int_{-\infty}^{\infty} f_t(t) &= 1\\
 		\int_{0}^{\infty} \lambda e^{-\alpha t} &= 1\\
-		\Big[ \lambda \frac{e^{-\alpha t}}{- \alpha}\Big]_0^\infty &= 1 \\
-		\lambda \frac{e^{-\alpha \infty}}{- \alpha} - 	\lambda \frac{e^{-\alpha 0}}{- \alpha} &= 1 \\
+		\lambda \Big[ \frac{e^{-\alpha t}}{- \alpha}\Big]_0^\infty &= 1 \\
+		\lambda \Big[ \frac{e^{-\alpha \infty}}{- \alpha} - \frac{e^{-\alpha 0}}{- \alpha} \Big] &= 1 \\
 		\lambda \frac{1}{\alpha} &= 1 \\
 		\lambda &= \alpha
 	\end{align*}
-	\includegraphics[width=\textwidth]{sketch.png}
+	\includegraphics[width=0.7\textwidth]{sketch.png}
 	\begin{align*}
-	F_{t \geq 0}(t) &= \int_{0}^{t} f_t(\tau)\ \text{d} \tau \\
-	&= \int_{0}^{t} \alpha e^{-\alpha \tau}\ \text{d} \tau\\
-	&= 	\Big[ \alpha \frac{e^{-\alpha \tau}}{- \alpha}\Big]_0^t\\
-	&= - e^{-\alpha t} + e^{-\alpha 0}\\
-	&= 1-e^{-\alpha t}
+	F_{t \geq 0}(t) &= \int_{0}^{t} f_t(\tau)\ \text{d} \tau
+	= \int_{0}^{t} \lambda e^{-\lambda \tau}\ \text{d} \tau
+	= 	\Big[ \lambda \frac{e^{-\lambda \tau}}{- \lambda}\Big]_0^t
+	= - e^{-\lambda t} + e^{-\lambda 0}
+	= 1-e^{-\lambda t}
 	\end{align*}
 	Altogether:
-	\[ F_t(t) = \begin{cases} 1-e^{-\alpha t} & t \geq 0\\
+	\[ F_t(t) = \begin{cases} 1-e^{-\lambda t} & t \geq 0\\
 	0 & t < 0
 	\end{cases} \]
 	\vspace{0.4cm}\\
 	b) Calculate the Mean Time To Failure (MTTF) of system S.\\
 	\begin{align*}
-		\mu_t &= \int_{-\infty}^{\infty} t\ f_t(t)\ \text{d} t\\
-		&= \int_{0}^{\infty} t\ \alpha\ e^{-\alpha t}\ \text{d} t\\
-		&= \Big[ t\ \alpha\  \frac{e^{-\alpha t}}{- \alpha}  \Big]_0^\infty - \int_{0}^{\infty} \alpha\ \frac{e^{-\alpha t}}{- \alpha}\ \text{d} t\\
-		&=  \lim\limits_{t \rightarrow \infty} - t\  e^{-\alpha t} + 0\ e^{- \alpha\ 0} - \big[ \frac{e^{-\alpha t}}{\alpha}\ \Big]_0^\infty \\
-		&= - \lim\limits_{t \rightarrow \infty} \frac{e^{-\alpha t}}{\alpha}  + \frac{e^{-\alpha 0}}{\alpha}\\
-		&= \frac{1}{\alpha}\\
+		MTTF = \mu_t &= \int_{-\infty}^{\infty} t\ f_t(t)\ \text{d} t
+		= \int_{0}^{\infty} t\ \lambda\ e^{-\lambda t}\ \text{d} t\\
+		&= \Big[ t\ \lambda\  \frac{e^{-\lambda t}}{- \lambda}  \Big]_0^\infty - \int_{0}^{\infty} \lambda\ \frac{e^{-\lambda t}}{- \lambda}\ \text{d} t\\
+		&=  \lim\limits_{t \rightarrow \infty} - t\  e^{-\lambda t} + 0\ e^{- \lambda \cdot 0} - \big[ \frac{e^{-\lambda t}}{\lambda}\ \Big]_0^\infty \\
+		&= - \lim\limits_{t \rightarrow \infty} \frac{e^{-\lambda t}}{\lambda}  + \frac{e^{-\lambda 0}}{\lambda}\\
+		&= \frac{1}{\lambda}\\
 		&= 5 \text{ years}
 	\end{align*}
 	c) Calculate the probability that system $S$ does not fail in the first 3 years.\\
 	\begin{align*}
 	 P(t \geq 3) & = 1 - P(t < 3) = 1 - F_t(3) \\
-	 &= 1 - 1  + e^{-\alpha 3}\\
+	 &= 1 - 1  + e^{-\lambda 3}\\
 	 &= e^{-\frac{3}{5}} \\
 	 & \approx 55\%
 	\end{align*}
@@ -238,10 +240,10 @@
 	ii) Give a pdf $f_ x(x)$ that models failure over time of the upgraded system. Also sketch
 	the pdf of $x$.\\
 	\[f_t(t) = \begin{cases} 
-	p\ \delta(t-3) + \lambda e^{-\alpha t} & t \geq 3\\
+	p\ \delta(t-3) + \lambda e^{-\lambda t} & t \geq 3\\
 	0 & t < 3
 	\end{cases} \qquad \text{where } \delta(t) \text{ is the dirac distribution} \]
-	\includegraphics[width=\textwidth]{sketch2.png}
+	\includegraphics[width=0.7\textwidth]{sketch2.png}\\
 	iii) Repeat subtask d) for the upgraded system.\vspace{0.2cm}\\
 	What has changed is that $P(t < 3)=0$ which implies that:\\ 
 	\[P(t \geq 3) = 1-P(t < 3) = 1-0 =1\]
