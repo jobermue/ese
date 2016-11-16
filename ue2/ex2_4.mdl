@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.5"
+    ComputedModelVersion    "1.7"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -27,9 +27,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Luke"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Nov 15 09:25:52 2016"
-  RTWModifiedTimeStamp	  401046701
-  ModelVersionFormat	  "1.%<AutoIncrement:5>"
+  LastModifiedDate	  "Wed Nov 16 18:23:59 2016"
+  RTWModifiedTimeStamp	  401214135
+  ModelVersionFormat	  "1.%<AutoIncrement:7>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -52,8 +52,8 @@ Model {
   BlockDescriptionStringDataTip	off
   ToolBar		  on
   StatusBar		  on
-  BrowserShowLibraryLinks off
-  BrowserLookUnderMasks	  off
+  BrowserShowLibraryLinks on
+  BrowserLookUnderMasks	  on
   SimulationMode	  "normal"
   LinearizationMsg	  "none"
   Profile		  off
@@ -67,8 +67,7 @@ Model {
     $ObjectID		    1
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
     model_		    "ex2_4"
-    signals_		    []
-    overrideMode_	    [0U]
+    overrideMode_	    [0.0]
     Array {
       Type		      "Cell"
       Dimension		      1
@@ -133,7 +132,7 @@ Model {
 	  $ObjectID		  3
 	  Version		  "1.11.1"
 	  StartTime		  "0.0"
-	  StopTime		  "1000.0"
+	  StopTime		  "4500.0"
 	  AbsTol		  "auto"
 	  FixedStep		  "auto"
 	  InitialStep		  "auto"
@@ -145,7 +144,7 @@ Model {
 	  ExtrapolationOrder	  4
 	  NumberNewtonIterations  1
 	  MaxStep		  "1"
-	  MinStep		  "1e-3"
+	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"
 	  SolverMode		  "Auto"
@@ -610,7 +609,7 @@ Model {
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 506, 98, 1415, 896 ] 
+      ConfigPrmDlgPosition     [ 482, 5, 1439, 920 ] 
     }
     PropName		    "ConfigurationSets"
   }
@@ -662,6 +661,40 @@ Model {
       SampleTime	      "inf"
       FramePeriod	      "inf"
       PreserveConstantTs      off
+    }
+    Block {
+      BlockType		      Derivative
+      CoefficientInTFapproximation "inf"
+    }
+    Block {
+      BlockType		      Product
+      Inputs		      "2"
+      Multiplication	      "Element-wise(.*)"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Zero"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Saturate
+      UpperLimitSource	      "Dialog"
+      UpperLimit	      "0.5"
+      LowerLimitSource	      "Dialog"
+      LowerLimit	      "-0.5"
+      LinearizeAsGain	      on
+      ZeroCross		      on
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as input"
+      LockScale		      off
+      RndMeth		      "Floor"
     }
     Block {
       BlockType		      Scope
@@ -738,10 +771,10 @@ Model {
   }
   System {
     Name		    "ex2_4"
-    Location		    [842, 137, 1850, 868]
+    Location		    [54, 75, 1918, 1019]
     Open		    on
     ModelBrowserVisibility  on
-    ModelBrowserWidth	    212
+    ModelBrowserWidth	    52
     ScreenColor		    "white"
     PaperOrientation	    "landscape"
     PaperPositionMode	    "auto"
@@ -750,16 +783,28 @@ Model {
     TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "100"
+    ZoomFactor		    "181"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "14"
+    SIDHighWatermark	    "26"
     Block {
       BlockType		      Sum
       Name		      "Add"
       SID		      "4"
       Ports		      [2, 1]
-      Position		      [620, 277, 650, 308]
+      Position		      [875, 277, 905, 308]
       ZOrder		      -2
+      InputSameDT	      off
+      OutDataTypeStr	      "Inherit: Inherit via internal rule"
+      SaturateOnIntegerOverflow	off
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Add1"
+      SID		      "15"
+      Ports		      [3, 1]
+      Position		      [415, 274, 445, 306]
+      ZOrder		      -2
+      Inputs		      "+++"
       InputSameDT	      off
       OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
@@ -768,16 +813,45 @@ Model {
       BlockType		      Constant
       Name		      "Constant"
       SID		      "6"
-      Position		      [560, 220, 590, 250]
+      Position		      [825, 205, 855, 235]
       ZOrder		      -5
       Value		      "20"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant3"
+      SID		      "16"
+      Position		      [300, 395, 330, 425]
+      ZOrder		      -4
+      Value		      "K_D"
+    }
+    Block {
+      BlockType		      Derivative
+      Name		      "Derivative"
+      SID		      "17"
+      Position		      [300, 340, 330, 370]
+      ZOrder		      -1
     }
     Block {
       BlockType		      Reference
       Name		      "Manual Switch"
       SID		      "13"
       Ports		      [2, 1]
-      Position		      [90, 282, 120, 318]
+      Position		      [140, 282, 170, 318]
+      ZOrder		      -13
+      LibraryVersion	      "1.256"
+      SourceBlock	      "simulink/Signal\nRouting/Manual Switch"
+      SourceType	      "Manual Switch"
+      sw		      "0"
+      action		      "0"
+      varsize		      off
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Manual Switch1"
+      SID		      "26"
+      Ports		      [2, 1]
+      Position		      [85, 217, 115, 253]
       ZOrder		      -13
       LibraryVersion	      "1.256"
       SourceBlock	      "simulink/Signal\nRouting/Manual Switch"
@@ -788,154 +862,70 @@ Model {
     }
     Block {
       BlockType		      Reference
-      Name		      "PID Controller"
-      SID		      "10"
-      Ports		      [1, 1]
-      Position		      [275, 282, 315, 318]
-      ZOrder		      -6
+      Name		      "Manual Switch2"
+      SID		      "22"
+      Ports		      [2, 1]
+      Position		      [550, 262, 580, 298]
+      ZOrder		      -13
       LibraryVersion	      "1.256"
-      SourceBlock	      "simulink/Continuous/PID Controller"
-      SourceType	      "PID 1dof"
-      Controller	      "PID"
-      TimeDomain	      "Continuous-time"
-      SampleTime	      "1"
-      IntegratorMethod	      "Forward Euler"
-      FilterMethod	      "Forward Euler"
-      Form		      "Parallel"
-      P			      "0.6*0.2"
-      I			      "(1.2*0.2)/110"
-      D			      "(3*0.2*110)/40"
-      N			      "15"
-      InitialConditionSource  "internal"
-      InitialConditionForIntegrator "0"
-      InitialConditionForFilter	"0"
-      ExternalReset	      "none"
-      IgnoreLimit	      off
-      ZeroCross		      on
-      LimitOutput	      off
-      UpperSaturationLimit    "inf"
-      LowerSaturationLimit    "-inf"
-      LinearizeAsGain	      off
-      AntiWindupMode	      "none"
-      Kb		      "1"
-      TrackingMode	      off
-      Kt		      "1"
-      RndMeth		      "Floor"
+      SourceBlock	      "simulink/Signal\nRouting/Manual Switch"
+      SourceType	      "Manual Switch"
+      sw		      "0"
+      action		      "0"
+      varsize		      off
+    }
+    Block {
+      BlockType		      Product
+      Name		      "Product2"
+      SID		      "18"
+      Ports		      [2, 1]
+      Position		      [355, 347, 385, 378]
+      ZOrder		      -13
+      InputSameDT	      off
+      OutDataTypeStr	      "Inherit: Inherit via internal rule"
       SaturateOnIntegerOverflow	off
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Repeating\nSequence\nStair"
+      SID		      "25"
+      Ports		      [0, 1]
+      Position		      [15, 130, 45, 160]
+      ZOrder		      -18
+      LibraryVersion	      "1.256"
+      SourceBlock	      "simulink/Sources/Repeating\nSequence\nStair"
+      SourceType	      "Repeating Sequence Stair"
+      OutValues		      "[20 21 23 20 25].'"
+      tsamp		      "700"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "double"
+      OutputDataTypeScalingMode	"double"
+      OutDataType	      "fixdt(0,8)"
+      ConRadixGroup	      "Best Precision: Vector-wise"
+      OutScaling	      "2^-12"
       LockScale		      off
-      PParamMin		      "[]"
-      PParamMax		      "[]"
-      PParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      IParamMin		      "[]"
-      IParamMax		      "[]"
-      IParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      DParamMin		      "[]"
-      DParamMax		      "[]"
-      DParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      NParamMin		      "[]"
-      NParamMax		      "[]"
-      NParamDataTypeStr	      "Inherit: Inherit via internal rule"
-      KbParamMin	      "[]"
-      KbParamMax	      "[]"
-      KbParamDataTypeStr      "Inherit: Inherit via internal rule"
-      KtParamMin	      "[]"
-      KtParamMax	      "[]"
-      KtParamDataTypeStr      "Inherit: Inherit via internal rule"
-      POutMin		      "[]"
-      POutMax		      "[]"
-      POutDataTypeStr	      "Inherit: Inherit via internal rule"
-      IOutMin		      "[]"
-      IOutMax		      "[]"
-      IOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      DOutMin		      "[]"
-      DOutMax		      "[]"
-      DOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      NOutMin		      "[]"
-      NOutMax		      "[]"
-      NOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      KbOutMin		      "[]"
-      KbOutMax		      "[]"
-      KbOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      KtOutMin		      "[]"
-      KtOutMax		      "[]"
-      KtOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      IntegratorOutMin	      "[]"
-      IntegratorOutMax	      "[]"
-      IntegratorOutDataTypeStr "Inherit: Inherit via internal rule"
-      FilterOutMin	      "[]"
-      FilterOutMax	      "[]"
-      FilterOutDataTypeStr    "Inherit: Inherit via internal rule"
-      SumOutMin		      "[]"
-      SumOutMax		      "[]"
-      SumOutDataTypeStr	      "Inherit: Inherit via internal rule"
-      SumI1OutMin	      "[]"
-      SumI1OutMax	      "[]"
-      SumI1OutDataTypeStr     "Inherit: Inherit via internal rule"
-      SumI2OutMin	      "[]"
-      SumI2OutMax	      "[]"
-      SumI2OutDataTypeStr     "Inherit: Inherit via internal rule"
-      SumI3OutMin	      "[]"
-      SumI3OutMax	      "[]"
-      SumI3OutDataTypeStr     "Inherit: Inherit via internal rule"
-      SumDOutMin	      "[]"
-      SumDOutMax	      "[]"
-      SumDOutDataTypeStr      "Inherit: Inherit via internal rule"
-      SumAccumDataTypeStr     "Inherit: Inherit via internal rule"
-      SumI1AccumDataTypeStr   "Inherit: Inherit via internal rule"
-      SumI2AccumDataTypeStr   "Inherit: Inherit via internal rule"
-      SumI3AccumDataTypeStr   "Inherit: Inherit via internal rule"
-      SumDAccumDataTypeStr    "Inherit: Inherit via internal rule"
-      SaturationOutMin	      "[]"
-      SaturationOutMax	      "[]"
-      SaturationOutDataTypeStr "Inherit: Same as input"
-      IntegratorContinuousStateAttributes "''"
-      IntegratorStateMustResolveToSignalObject off
-      IntegratorRTWStateStorageClass "Auto"
-      FilterContinuousStateAttributes "''"
-      FilterStateMustResolveToSignalObject off
-      FilterRTWStateStorageClass "Auto"
+    }
+    Block {
+      BlockType		      Saturate
+      Name		      "Saturation"
+      SID		      "24"
+      Ports		      [1, 1]
+      Position		      [620, 285, 650, 315]
+      ZOrder		      -10
+      InputPortMap	      "u0"
+      UpperLimit	      "1"
+      LowerLimit	      "0"
     }
     Block {
       BlockType		      Scope
       Name		      "Scope"
       SID		      "7"
-      Ports		      [2]
-      Position		      [735, 286, 765, 319]
-      ZOrder		      -3
-      Floating		      off
-      Location		      [309, 108, 1016, 543]
-      Open		      on
-      NumInputPorts	      "2"
-      ZoomMode		      "xonly"
-      List {
-	ListType		AxesTitles
-	axes1			"%<SignalLabel>"
-	axes2			"%<SignalLabel>"
-      }
-      List {
-	ListType		ScopeGraphics
-	FigureColor		"[0.5 0.5 0.5]"
-	AxesColor		"[0 0 0]"
-	AxesTickColor		"[1 1 1]"
-	LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-	LineStyles		"-|-|-|-|-|-"
-	LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-	MarkerStyles		"none|none|none|none|none|none"
-      }
-      YMin		      "20~-5"
-      YMax		      "21.75~5"
-      DataFormat	      "StructureWithTime"
-      SampleTime	      "0"
-    }
-    Block {
-      BlockType		      Scope
-      Name		      "Scope1"
-      SID		      "12"
       Ports		      [1]
-      Position		      [355, 379, 385, 411]
+      Position		      [990, 273, 1020, 307]
       ZOrder		      -3
       Floating		      off
-      Location		      [224, 434, 931, 869]
+      Location		      [1, 49, 1921, 1039]
       Open		      on
       NumInputPorts	      "1"
       ZoomMode		      "xonly"
@@ -953,8 +943,40 @@ Model {
 	LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
 	MarkerStyles		"none|none|none|none|none|none"
       }
-      YMin		      "20"
-      YMax		      "21.75"
+      YMin		      "19.9"
+      YMax		      "21.1"
+      DataFormat	      "StructureWithTime"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Scope1"
+      SID		      "12"
+      Ports		      [2]
+      Position		      [685, 371, 715, 404]
+      ZOrder		      -3
+      Floating		      off
+      Location		      [1006, 330, 1821, 922]
+      Open		      off
+      NumInputPorts	      "2"
+      ZoomMode		      "xonly"
+      List {
+	ListType		AxesTitles
+	axes1			"%<SignalLabel>"
+	axes2			"%<SignalLabel>"
+      }
+      List {
+	ListType		ScopeGraphics
+	FigureColor		"[0.5 0.5 0.5]"
+	AxesColor		"[0 0 0]"
+	AxesTickColor		"[1 1 1]"
+	LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
+	LineStyles		"-|-|-|-|-|-"
+	LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
+	MarkerStyles		"none|none|none|none|none|none"
+      }
+      YMin		      "20~-1"
+      YMax		      "21.75~5"
       SaveName		      "ScopeData1"
       DataFormat	      "StructureWithTime"
       SampleTime	      "0"
@@ -964,18 +986,17 @@ Model {
       Name		      "Sine Wave"
       SID		      "14"
       Ports		      [0, 1]
-      Position		      [30, 335, 60, 365]
+      Position		      [15, 340, 45, 370]
       ZOrder		      -21
-      Amplitude		      "2"
-      Bias		      "20"
-      Frequency		      "0.005"
+      Bias		      "22"
+      Frequency		      "0.004"
       SampleTime	      "0"
     }
     Block {
       BlockType		      Step
       Name		      "Step"
       SID		      "9"
-      Position		      [30, 230, 60, 260]
+      Position		      [15, 230, 45, 260]
       ZOrder		      -22
       Before		      "20"
       After		      "21"
@@ -986,7 +1007,7 @@ Model {
       Name		      "Sum"
       SID		      "11"
       Ports		      [2, 1]
-      Position		      [175, 290, 195, 310]
+      Position		      [215, 290, 235, 310]
       ZOrder		      -32
       ShowName		      off
       IconShape		      "round"
@@ -999,17 +1020,35 @@ Model {
       BlockType		      TransferFcn
       Name		      "Transfer Fcn"
       SID		      "3"
-      Position		      [365, 282, 425, 318]
+      Position		      [685, 282, 745, 318]
       ZOrder		      -9
       Numerator		      "[73.23]"
       Denominator	      "[420.5 1]"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Name		      "Transfer Fcn1"
+      SID		      "19"
+      Position		      [295, 222, 355, 258]
+      ZOrder		      -9
+      Numerator		      "[K_P]"
+      Denominator	      "[1]"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Name		      "Transfer Fcn2"
+      SID		      "20"
+      Position		      [290, 282, 350, 318]
+      ZOrder		      -9
+      Numerator		      "[K_I]"
+      Denominator	      "[1 0]"
     }
     Block {
       BlockType		      TransportDelay
       Name		      "Transport\nDelay"
       SID		      "5"
       Ports		      [1, 1]
-      Position		      [495, 285, 525, 315]
+      Position		      [785, 285, 815, 315]
       ZOrder		      -10
       DelayTime		      "30"
       BufferSize	      "16635"
@@ -1017,7 +1056,6 @@ Model {
     Line {
       SrcBlock		      "Constant"
       SrcPort		      1
-      Points		      [10, 0]
       DstBlock		      "Add"
       DstPort		      1
     }
@@ -1039,11 +1077,12 @@ Model {
       SrcPort		      1
       Points		      [30, 0]
       Branch {
-	Points			[0, 165; -500, 0]
+	Points			[0, 165; -715, 0]
 	DstBlock		"Sum"
 	DstPort			2
       }
       Branch {
+	Points			[35, 0]
 	DstBlock		"Scope"
 	DstPort			1
       }
@@ -1051,51 +1090,134 @@ Model {
     Line {
       SrcBlock		      "Sum"
       SrcPort		      1
-      DstBlock		      "PID Controller"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "PID Controller"
-      SrcPort		      1
-      Points		      [10, 0]
+      Points		      [15, 0; 0, 55]
       Branch {
-	DstBlock		"Transfer Fcn"
+	DstBlock		"Derivative"
 	DstPort			1
       }
       Branch {
-	Points			[0, 95]
-	DstBlock		"Scope1"
-	DstPort			1
+	Points			[0, -55]
+	Branch {
+	  Points		  [0, -60]
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Branch {
+	  DstBlock		  "Transfer Fcn2"
+	  DstPort		  1
+	}
       }
     }
     Line {
       SrcBlock		      "Manual Switch"
       SrcPort		      1
-      DstBlock		      "Sum"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "Step"
-      SrcPort		      1
-      Points		      [5, 0; 0, 45]
-      DstBlock		      "Manual Switch"
-      DstPort		      1
+      Points		      [15, 0]
+      Branch {
+	DstBlock		"Sum"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -110; 300, 0; 0, 80]
+	DstBlock		"Manual Switch2"
+	DstPort			1
+      }
     }
     Line {
       Labels		      [0, 0]
       SrcBlock		      "Sine Wave"
       SrcPort		      1
+      Points		      [20, 0; 0, -45]
+      DstBlock		      "Manual Switch"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Transfer Fcn1"
+      SrcPort		      1
+      Points		      [40, 0]
+      DstBlock		      "Add1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Constant3"
+      SrcPort		      1
+      Points		      [5, 0]
+      DstBlock		      "Product2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Derivative"
+      SrcPort		      1
+      DstBlock		      "Product2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Add1"
+      SrcPort		      1
+      DstBlock		      "Manual Switch2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Manual Switch2"
+      SrcPort		      1
+      Points		      [15, 0; 0, 15]
+      Branch {
+	Points			[0, 5]
+	DstBlock		"Saturation"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 100]
+	DstBlock		"Scope1"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Saturation"
+      SrcPort		      1
       Points		      [5, 0]
       Branch {
-	Points			[0, -40]
-	DstBlock		"Manual Switch"
-	DstPort			2
+	DstBlock		"Transfer Fcn"
+	DstPort			1
       }
       Branch {
-	Points			[30, 0; 0, 210; 605, 0; 0, -250]
-	DstBlock		"Scope"
-	DstPort			2
+	Points			[0, 80]
+	DstBlock		"Scope1"
+	DstPort			1
       }
+    }
+    Line {
+      SrcBlock		      "Transfer Fcn2"
+      SrcPort		      1
+      Points		      [20, 0; 0, -10]
+      DstBlock		      "Add1"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Product2"
+      SrcPort		      1
+      Points		      [10, 0]
+      DstBlock		      "Add1"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Repeating\nSequence\nStair"
+      SrcPort		      1
+      Points		      [10, 0; 0, 80]
+      DstBlock		      "Manual Switch1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Step"
+      SrcPort		      1
+      DstBlock		      "Manual Switch1"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Manual Switch1"
+      SrcPort		      1
+      Points		      [5, 0]
+      DstBlock		      "Manual Switch"
+      DstPort		      1
     }
   }
 }
