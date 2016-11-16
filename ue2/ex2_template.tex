@@ -50,6 +50,34 @@ stringstyle=\color{mauve},
 \patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
 
 
+%% begin: my packages %%
+\usepackage{amsthm}
+\usepackage{mdwlist}
+\usepackage{paralist}
+
+\newtheorem{innercustomthm}{Theorem}
+\newenvironment{customthm}[1]
+  {\renewcommand\theinnercustomthm{#1}\innercustomthm}
+  {\endinnercustomthm}
+\newtheorem{innercustomlem}{Lemma}
+\newenvironment{customlem}[1]
+  {\renewcommand\theinnercustomlem{#1}\innercustomlem}
+  {\endinnercustomlem}
+%% end: my packages %%
+
+%% begin: my commands %%
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+\newtheorem{defin}{Definition}
+\newtheorem{cor}{Corollary}
+
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\LR}{\Leftrightarrow}
+%% end: my commands %%
+
 
 \newcommand{\answer}[1]{{\color{dkgreen} #1 } }
 \newcommand{\comment}[1]{{\color{blue} #1 } }
@@ -321,8 +349,67 @@ parents, children and children's parents of $\rv{x}$.
 \begin{enumerate}[a)]
 \item Prove that a variable $\rv{x}$ is conditionally independent of all other
   variables in the network given its Markov blanket $MB(\rv{x})$.
+\end{enumerate}
+
+\noindent
+Alternative formulations of the statement to be proved:
+\begin{itemize}
+\item $\forall \rv{y}, \rv{y} \neq \rv{x}: \rv{x} \perp \rv{y} \; | \; MB(\rv{x})$
+\item $\forall \rv{y}, \rv{y} \neq \rv{x}: P(\rv{x}|MB(\rv{x}),\rv{y}) = P(\rv{x}|MB(\rv{x}))$
+\item $\forall \rv{y}, \rv{y} \neq \rv{x}: P(\rv{x},\rv{y}|MB(\rv{x})) = P(\rv{x}|MB(\rv{x}))*P(\rv{y}|MB(\rv{x}))$
+\end{itemize}
+
+%\begin{thm}
+%A variable $\rv{x}$ is conditionally independent of all other variables in the network given its Markov blanket $MB(\rv{x})$.
+%\end{thm}
+
+\begin{proof}
+
+\noindent
+We use the following Lemmas from the lecture:
+
+\begin{lem}
+Variables $\rv{x}$ and $\rv{y}$ are conditionally independent $\LR$ $\nexists$ active path between $\rv{x}$ and $\rv{y}$ in the Bayes Net.
+\end{lem}
+
+\begin{lem}
+A path is active if each triple is active.
+\end{lem}
+
+
+\noindent
+Assume, in contradiction to our initial statement, that $\exists \rv{y}, \rv{y} \neq \rv{x}: \rv{x} \not\perp \rv{y} \; | \; MB(\rv{x})$, i.e. there is an active path between $\rv{x}$ and some $\rv{y}$ in the Bayes Net.
+%$\exists y$ s.t. x and y are not conditionally independent.
+
+\noindent
+Consider the following exhaustive cases for y:
+\begin{itemize}
+\item $\rv{y} \in MB(\rv{x})$: But then obviously $P(x|MB(x),y) = P(x|MB(x))$, hence $\rv{x} \perp \rv{y} \; | \; MB(\rv{x})$. Contradiction.
+\item $\rv{y} \notin MB(\rv{x})$: Note that all potential active paths from $\rv{x}$ to $\rv{y}$ have to pass through $MB(\rv{x})$. We will show that either the first or in some cases the second triple on all such paths (starting from x) is inactive and thus no active path exists. Let's consider the following cases for the first triple of a potential active path between $\rv{x}$ and some $\rv{y} \notin MB(\rv{x})$: \footnote{The notation $\rv{y} .... \rv{n}$ is used to express that $\rv{y}$ is somehow connected 'after' $\rv{n}$ or $\rv{y}=\rv{n}$}
+	\begin{itemize}
+	\item $\rv{y} .... \rv{n} \ra parent(\rv{x}) \ra \rv{x}$: Given $parent(\rv{x})$, $\rv{n} \ra parent(\rv{x}) \ra \rv{x}$ is an inactive triple.
+	\item $\rv{y} .... \rv{n} \la parent(\rv{x}) \ra \rv{x}$: Given $parent(\rv{x})$, $\rv{n} \la parent(\rv{x}) \ra \rv{x}$ is an inactive triple.
+	\item $\rv{x} \ra child(\rv{x}) \ra \rv{n} ... \rv{y}$: Given $child(\rv{x})$, $\rv{x} \ra child(\rv{x}) \ra \rv{n}$ is an inactive triple.
+	\item $\rv{x} \ra child(\rv{x}) \la parent(child(\rv{x})) ... \rv{y}$: Given $child(\rv{x})$, $\rv{x} \ra child(\rv{x}) \la parent(child(\rv{x}))$ is an active triple. Consider the cases:
+		\begin{itemize}
+		\item $\rv{y} = parent(child(\rv{x}))$: see $\rv{y} \in MB(\rv{x})$
+		\item $\rv{y} \neq parent(child(\rv{x}))$: i.e. there is at least one other triple on the path, starting with $child(\rv{x}) \la parent(child(\rv{x}))$. That triple can be either $child(\rv{x}) \la parent(child(\rv{x})) \ra \rv{n}$ or $child(\rv{x}) \la parent(child(\rv{x})) \la \rv{n}$ (where $\rv{n}...\rv{y}$). Both of these triples are inactive given $parent(child(\rv{x}))$.
+		\end{itemize}
+	\end{itemize}
+	Hence, because there's always an inactive triple on any path between $\rv{x}$ and any $\rv{y} \notin MB(\rv{x})$, we have that there's no $\rv{y}$ s.t. there's an active path between $\rv{x}$ and $\rv{y}$, which contradicts our initial assumption.
+\end{itemize}
+Contradiction in all branches of case analysis, hence our initial assumption is wrong and thus $\forall \rv{y}, \rv{y} \neq \rv{x}: \rv{x} \perp \rv{y} \; | \; MB(\rv{x})$ holds.
+\end{proof}
+
+\begin{enumerate}[b)]
 \item Discuss whether we can remove $\rv{x}$ if we are planning to use
   (i)~rejection sampling and (ii)~likelihood weighting.
+  
+  If we want to sample a joint conditional probability that includes $\rv{x}$ (e.g. $\prob{\rv{x},\rv{y}|MB(\rv{x})}$), we can't remove it, as then there's no way to sample it (we need to somehow get $\prob{\rv{x}|MB(\rv{x})$, to get $\prob{\rv{x},\rv{y}|MB(\rv{x})} = \prob{\rv{x}|MB(\rv{x})} \cdot \prob{\rv{y}|MB(\rv{x})}$}).
+  
+  But if we want to sample a joint conditional probability that does not include $\rv{x}$, we can remove it - the resulting probability distribution/table will be the same, as all other variables are conditionally independent of $\rv{x}$, given $MB(\rv{x})$.
+  
+  This argumentation applies to both sampling methods, as conditional independence does not depend on the sampling method.
 \end{enumerate}
 
 %
