@@ -14,6 +14,7 @@
 \usepackage{enumerate}
 \usepackage{lastpage}
 \usepackage{tikz}
+\usepackage{array}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -200,23 +201,32 @@ stringstyle=\color{mauve},
   true?
 
   \vspace{0.2cm}
-  \begin{tabular}{|l|l|}
+  \begin{tabular}{|l|c|}
     \hline
-    $\rv{a} \perp \rv{k}$ & \hspace{1cm} \\ \hline
-    $\rv{a} \perp \rv{k} \; | \; \rv{d}$ & \hspace{1cm} \\ \hline
-    $\rv{a} \perp \rv{k} \; | \; \rv{h}$ & \hspace{1cm} \\ \hline
-    $\rv{h} \perp \rv{i}$ & \\ \hline
+    $\rv{a} \perp \rv{k}$ & F \\ \hline
+    $\rv{a} \perp \rv{k} \; | \; \rv{d}$ & F \\ \hline
+    $\rv{a} \perp \rv{k} \; | \; \rv{h}$ & F\\ \hline
+    $\rv{h} \perp \rv{i}$ & F\\ \hline
   \end{tabular}
   \hspace{0.2cm}
-  \begin{tabular}{|l|l|}
+  \begin{tabular}{|l|c|}
     \hline
-    $\rv{h} \perp \rv{i} \; | \; \rv{b}$ & \hspace{1cm} \\ \hline
-    $\rv{a} \perp \rv{l} \; | \; \rv{b}, \rv{m}$ & \\ \hline
-    $\rv{a} \perp \rv{g}$ & \\ \hline
-    $\rv{d} \perp \rv{g} \; | \; \rv{e}, \rv{l}$ & \\ \hline
+    $\rv{h} \perp \rv{i} \; | \; \rv{b}$ & T \\ \hline
+    $\rv{a} \perp \rv{l} \; | \; \rv{b}, \rv{m}$ & F\\ \hline
+    $\rv{a} \perp \rv{g}$ & T\\ \hline
+    $\rv{d} \perp \rv{g} \; | \; \rv{e}, \rv{l}$ & F\\ \hline
   \end{tabular}
   \vspace{0.2cm}
 \end{enumerate}
+The variables are independent if there is no active path between them.\\
+$\rv{a} \perp \rv{k}:\rv{a}\rightarrow\rv{d}\rightarrow\rv{h}\rightarrow\rv{k}$\\
+$\rv{a} \perp \rv{k} \; | \; \rv{d}:\rv{a}\rightarrow\rv{d}\leftarrow\rv{b}\rightarrow\rv{e}\rightarrow\rv{i}\rightarrow\rv{k}$ \\
+$\rv{a} \perp \rv{k} \; | \; \rv{h}:\rv{a}\rightarrow\rv{d}\leftarrow\rv{b}\rightarrow\rv{e}\rightarrow\rv{i}\rightarrow\rv{k}$\\
+$\rv{h} \perp \rv{i}:\rv{h}\leftarrow\rv{d}\leftarrow\rv{b}\rightarrow\rv{e}\rightarrow\rv{i}$\\
+$\rv{h} \perp \rv{i} \; | \; \rv{b}:$ no active path \\
+$\rv{a} \perp \rv{l} \; | \; \rv{b}, \rv{m}:\rv{a}\rightarrow\rv{d}\rightarrow\rv{h}\rightarrow\rv{k}\leftarrow\rv{i}\rightarrow\rv{l}$ \\
+$\rv{a} \perp \rv{g}:$ no active path\\
+$\rv{d} \perp \rv{g}:\rv{d}\leftarrow\rv{b}\rightarrow\rv{e}\leftarrow\rv{c}\rightarrow\rv{f}\rightarrow\rv{j}\leftarrow\rv{g}$ \\
 
 
 %
