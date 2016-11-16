@@ -14,7 +14,7 @@
 \usepackage{enumerate}
 \usepackage{lastpage}
 \usepackage{tikz}
-\usepackage{array}
+\usepackage{textcomp}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -442,9 +442,48 @@ max. heat). The delay of the 'Transport Delay' block is 30 seconds.
   applying the Ziegler–Nichols
   method~\footnote{\url{https://en.wikipedia.org/wiki/PID_controller}}.  Also
   include a plot of the step-response function in your deliverable.
+  
+From the step-response we can verify the amplification of 73.23 and the time constant 420.5s
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{step_response_2_4.png}
+  \caption{Task 2.4, Step-response}
+  \label{fig:heat}
+\end{figure}
+For the Ziegler–Nichols method we determine the ultimate gain $K_U$ by increase $K_P$ until we see a stable oscillation at the output. 
+$T_U$ is the period of the oscillation when $K_P=K_U$. With these two values we can calculate the PID parameters:\\
+$K_P=0.6*K_U$\\
+$K_I=\frac{1.2*K_U}{T_U}$\\
+$K_D=\frac{3*K_U*T_U}{40}$\\
 \item Build a negative-feedback PID controlled system that includes the modeled
   plant and plot the system reaction to a few simple set-point input functions
   (step, multi-step, sin,~\ldots).
+  
+  
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{model.png}
+  \caption{Task 2.4, Controlled system}
+  \label{fig:heat}
+\end{figure}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{result_sat.png}
+  \caption{Task 2.4, Step-response of the controlled system}
+  \label{fig:heat}
+\end{figure}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{result_multistep_sat.png}
+  \caption{Task 2.4, Step sequence [20 21 23 20 25], 700sec per step}
+  \label{fig:heat}
+\end{figure}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{result_sine_sat.png}
+  \caption{Task 2.4, Sine with 22\textcelsius average, an amplitude of 1\textcelsius and 250sec period}
+  \label{fig:heat}
+\end{figure}
 \end{enumerate}
 
 
