@@ -1,0 +1,37 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{uepage}
+
+\RequirePackage{scrpage2}
+\RequirePackage{tikz}
+\RequirePackage{amssymb}
+\RequirePackage{amsmath}
+\RequirePackage{subcaption}
+\RequirePackage{amsmath}
+\RequirePackage{graphicx}
+\RequirePackage{relsize}
+\RequirePackage{xcolor}
+
+
+%############################################################
+% Headlines
+ \usepackage{scrpage2}
+\automark[subsection]{section}
+\pagestyle{scrheadings}
+\ihead{\leftmark}
+\ohead{\rightmark}
+\chead{}
+\renewcommand*{\subsubsectionmark}[1]{\markright{\subsubsectionmarkformat #1}}
+\makeatletter
+
+% Aus dem KOMA-Script-Buch:
+\renewcommand*{\rightmark}{%
+  \expandafter\@rightmark\botmark\@empty\@empty
+}
+
+%######################################################
+% Title page
+\def\authorname#1{{\larger[2]#1}}
+\def\studentnumber#1{{\larger[1] Matr.: #1}}
+\def\curriculum#1{{Curriculum: #1}}
+\def\email#1{\smaller[1]\ttfamily{#1}}
+

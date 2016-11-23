@@ -1,0 +1,79 @@
+\documentclass[a4paper,footsepline]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+%##### English
+\usepackage[english]{fancyref}
+\usepackage[USenglish]{babel}
+
+%#### Deutsch
+%\usepackage[ngerman]{babel}
+%\usepackage[german]{fancyref}
+
+%#### Usepackage #####
+
+\usepackage{uepage} 
+\usepackage{amssymb}
+
+\usepackage{courier}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{wasysym}
+\usepackage{framed}
+\usetikzlibrary{arrows, automata}
+\usepackage{ marvosym }
+
+
+\newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
+
+\areaset{15cm}{26cm}
+
+%#### Title page #####
+\title{Cyber Physical Systems: Stochastic foundations LU}
+\subject{Term Project - Design Document}
+
+\author{
+	\authorname{Mathias Lechner, Benjamin Binder} \\
+	\authorname{Johannes Obermüller, Lukas Hartung} \\
+	\studentnumber{1225134, 1226121, 1126799} \\
+	\curriculum{066 938}\\
+	\email{e1225134@student.tuwien.ac.at, e1226121@student.tuwien.ac.at}\\
+	\email{e1126799@student.tuwien.ac.at}\\\\
+}
+\date{\today}
+
+
+%### Start of Document
+\begin{document}
+
+
+\maketitle
+\section*{Problem statement and requirements}
+The task of this project is to implement the \textbf{control\_system} of the provided quadcopter simulation. The \textbf{control\_system} get measurement values from the quadcopter model as input and should provide PWM commands for the motors of the quadcopter as output, such that the quadcopter:
+\begin{enumerate}
+	\item does not crash on the ground or with an obstacle
+	\item pass through all the waypoints
+	\item finally reaches the target position
+\end{enumerate}
+The side condition is that condition 2) and 3) should be achieved as fast as possible. At the start of the simulation the quadcopter is placed to a fixed starting position.
+\vspace{0.2cm}\\
+The measurement inputs of the \textbf{control\_system} include data from:
+\begin{itemize}
+	\item a 3-axis gyroscope
+	\item a 3-axis accelerometer
+	\item latitude, longitude and altitude values from a GPS sensor
+	\item a sonar based distance sensor that points to the bottom of the quadcopter
+\end{itemize}
+The GPS sensor provide new data ever 200 ms, the sonar sensor every 100ms. The update frequency of the gyroscope and accelerometer is a lot higher (maybe add exact value here).
+\vspace{0.2cm}\\
+A PI-controller is provided that takes absolute pitch, roll and yaw-differences values and controls the pose of the quadcopter accordingly by generating the PWM signals for the motors. \\
+To accomplish this, the PI-controller needs the current pose of the quadcopter, thus this pose is an additional measurement that is provided to the \textbf{control\_system}. 
+\section*{Design: components}
+
+\section*{Task schedule}
+	
+\end{document}
