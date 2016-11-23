@@ -26,11 +26,12 @@
 \usepackage{framed}
 \usetikzlibrary{arrows, automata}
 \usepackage{ marvosym }
+\usepackage{placeins}
 
 
 \newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
 
-\areaset{15cm}{26cm}
+\areaset{15cm}{28cm}
 
 %#### Title page #####
 \title{Cyber Physical Systems: Stochastic foundations LU}
@@ -71,9 +72,83 @@ The measurement inputs of the \textbf{control\_system} include data from:
 The GPS sensor provide new data ever 200 ms, the sonar sensor every 100ms. The update frequency of the gyroscope and accelerometer is a lot higher (maybe add exact value here).
 \vspace{0.2cm}\\
 A PI-controller is provided that takes absolute pitch, roll and yaw-differences values and controls the pose of the quadcopter accordingly by generating the PWM signals for the motors. \\
-To accomplish this, the PI-controller needs the current pose of the quadcopter, thus this pose is an additional measurement that is provided to the \textbf{control\_system}. 
+To accomplish this, the PI-controller needs the current pose of the quadcopter, thus this pose is an additional measurement that is provided to the \textbf{control\_system}. \\
+So the task of this project includes building a \emph{state estimator} for the pose of the quadcopter based on the given measurement, i.e. this additional measurement of the pose needs to be replaced by a estimated pose based on the given measurements.
+\FloatBarrier
 \section*{Design: components}
-
+The components of our solution will be designed according to figure (\ref{fig:layers}). 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/figure.png}
+	\caption{Three-level architecture of a goal-based agent (taken from the assignment document)}
+	\label{fig:layers}
+\end{figure}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node (se1) at (0,0) [draw, rectangle,minimum width=9cm, minimum height=2cm] {State estimation};
+		\node (gyro) at (-3.5, -3) [draw=none] {Gyro};
+		\node (acc) at (-1.25, -3) [draw=none] {Acceleration};
+		\node (gps) at (1.25, -3) [draw=none] {GPS};
+		\node (sonar) at (3.5, -3) [draw=none] {Sonar};
+		\node (pose) at (7, 0) [draw=none] {Attitude};
+		
+		\node (att) at (-4, 3) [draw=none] {Attitude};
+		\node (rot) at (-2, 3) [draw=none] {Rotation};
+		\node (pos) at (0, 3) [draw=none] {Acceleration};
+		\node (v) at (2, 3) [draw=none] {GPS};
+		\node (son2) at (4, 3) [draw=none] {Sonar};
+		
+		\draw[-triangle 60] (gyro) to +(0,2);
+		\draw[-triangle 60] (acc) to +(0,2);
+		\draw[-triangle 60] (gps) to +(0,2);
+		\draw[-triangle 60] (sonar) to +(0,2);
+		\draw[triangle 60-] (pose) to +(-2.5,0);
+		
+		\draw[triangle 60-] (att) to +(0,-2);
+		\draw[triangle 60-] (rot) to +(0,-2);
+		\draw[triangle 60-] (pos) to +(0,-2);
+		\draw[triangle 60-] (v) to +(0,-2);
+		\draw[triangle 60-] (son2) to +(0,-2);
+		
+	\end{tikzpicture}
+	\caption{Interfaces of the "state estimation" block}
+	\label{fig:state_est}
+\end{figure}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+	\node (se1) at (0,0) [draw, rectangle,minimum width=9cm, minimum height=2cm] {Localization};
+	\node (att2) at (-3.5, 3) [draw=none] {Attidute};
+	\node (rot2) at (-1.25, 3) [draw=none] {Rotation};
+	\node (pos) at (1.25, 3) [draw=none] {Position};
+	\node (v) at (3.5, 3) [draw=none] {Velocity};
+	\node (pose) at (7, 0) [draw=none] {Position};
+	
+	\node (att) at (-4, -3) [draw=none] {Attitude};
+	\node (rot) at (-2, -3) [draw=none] {Rotation};
+	\node (acc) at (0, -3) [draw=none] {Acceleration};
+	\node (gps) at (2, -3) [draw=none] {GPS};
+	\node (son) at (4, -3) [draw=none] {Sonar};
+	
+	\draw[-triangle 60] (att) to +(0,2);
+	\draw[-triangle 60] (rot) to +(0,2);
+	\draw[-triangle 60] (gps) to +(0,2);
+	\draw[-triangle 60] (acc) to +(0,2);
+	\draw[-triangle 60] (son) to +(0,2);
+	\draw[triangle 60-] (pose) to +(-2.5,0);
+	
+	\draw[triangle 60-] (att2) to +(0,-2);
+	\draw[triangle 60-] (rot2) to +(0,-2);
+	\draw[triangle 60-] (pos) to +(0,-2);
+	\draw[triangle 60-] (v) to +(0,-2);
+	
+	\end{tikzpicture}
+	\caption{Interfaces of the "localization" block}
+	\label{fig:state_est2}
+\end{figure}
+The block "state estimation" will be implemented as a Kalman-filter and have the interfaces as shown in figure (\ref{fig:state_est})
+\FloatBarrier
 \section*{Task schedule}
 	
 \end{document}
