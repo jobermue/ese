@@ -86,7 +86,7 @@ The components of our solution will be designed according to figure (\ref{fig:la
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-		\node (se1) at (0,0) [draw, rectangle,minimum width=9cm, minimum height=2cm] {State estimation};
+		\node (se1) at (0,0) [draw, fill=green!20,rectangle,minimum width=9cm, minimum height=2cm] {State estimation};
 		\node (gyro) at (-3.5, -3) [draw=none] {Gyro};
 		\node (acc) at (-1.25, -3) [draw=none] {Acceleration};
 		\node (gps) at (1.25, -3) [draw=none] {GPS};
@@ -95,42 +95,33 @@ The components of our solution will be designed according to figure (\ref{fig:la
 		
 		\node (att) at (-4, 3) [draw=none] {Attitude};
 		\node (rot) at (-2, 3) [draw=none] {Rotation};
-		\node (pos) at (0, 3) [draw=none] {Acceleration};
-		\node (v) at (2, 3) [draw=none] {GPS};
-		\node (son2) at (4, 3) [draw=none] {Sonar};
+		\node (acc2) at (0, 3) [draw=none] {Acceleration};
+		\node (gps2) at (2, 3) [draw=none] {GPS};
+		\node (son) at (4, 3) [draw=none] {Sonar};
 		
 		\draw[-triangle 60] (gyro) to +(0,2);
-		\draw[-triangle 60] (acc) to +(0,2);
-		\draw[-triangle 60] (gps) to +(0,2);
+		\draw[-triangle 60] (acc2) to +(0,2);
+		\draw[-triangle 60] (gps2) to +(0,2);
 		\draw[-triangle 60] (sonar) to +(0,2);
 		\draw[triangle 60-] (pose) to +(-2.5,0);
 		
 		\draw[triangle 60-] (att) to +(0,-2);
 		\draw[triangle 60-] (rot) to +(0,-2);
-		\draw[triangle 60-] (pos) to +(0,-2);
-		\draw[triangle 60-] (v) to +(0,-2);
-		\draw[triangle 60-] (son2) to +(0,-2);
+		\draw[triangle 60-] (acc2) to +(0,-2);
+		\draw[triangle 60-] (gps2) to +(0,-2);
+		\draw[triangle 60-] (son) to +(0,-2);
 		
-	\end{tikzpicture}
-	\caption{Interfaces of the "state estimation" block}
-	\label{fig:state_est}
-\end{figure}
-\begin{figure}
-	\centering
-	\begin{tikzpicture}
-	\node (se1) at (0,0) [draw, rectangle,minimum width=9cm, minimum height=2cm] {Localization};
-	\node (att2) at (-3.5, 3) [draw=none] {Attidute};
-	\node (rot2) at (-1.25, 3) [draw=none] {Rotation};
-	\node (pos) at (1.25, 3) [draw=none] {Position};
-	\node (v) at (3.5, 3) [draw=none] {Velocity};
-	\node (pose) at (7, 0) [draw=none] {Position};
 	
-	\node (att) at (-4, -3) [draw=none] {Attitude};
-	\node (rot) at (-2, -3) [draw=none] {Rotation};
-	\node (acc) at (0, -3) [draw=none] {Acceleration};
-	\node (gps) at (2, -3) [draw=none] {GPS};
-	\node (son) at (4, -3) [draw=none] {Sonar};
+	\node (se1) at (0,6) [draw, fill=green!20, rectangle,minimum width=9cm, minimum height=2cm] {Localization};
+	\node (att2) at (-3.5, 9) [draw=none] {Attidute};
+	\node (rot2) at (-1.25, 9) [draw=none] {Rotation};
+	\node (pos) at (1.25, 9) [draw=none] {Position};
+	\node (v) at (3.5, 9) [draw=none] {Velocity};
+	\node (pose) at (7, 6) [draw=none] {Position};
 	
+
+	\draw[-triangle 60] (acc) to +(0,2);
+	\draw[-triangle 60] (gps) to +(0,2);
 	\draw[-triangle 60] (att) to +(0,2);
 	\draw[-triangle 60] (rot) to +(0,2);
 	\draw[-triangle 60] (gps) to +(0,2);
@@ -144,10 +135,10 @@ The components of our solution will be designed according to figure (\ref{fig:la
 	\draw[triangle 60-] (v) to +(0,-2);
 	
 	\end{tikzpicture}
-	\caption{Interfaces of the "localization" block}
-	\label{fig:state_est2}
+	\caption{Interfaces of the "state estimation" and "localization" block}
+	\label{fig:state_est}
 \end{figure}
-The block "state estimation" will be implemented as a Kalman-filter and have the interfaces as shown in figure (\ref{fig:state_est})
+The block "state estimation" and "localization" will be implemented as Kalman-filters and have the interfaces as shown in figure (\ref{fig:state_est})
 \FloatBarrier
 \section*{Task schedule}
 	
