@@ -29,6 +29,7 @@
 \usepackage{placeins}
 
 
+\newcommand{\reals}{\mathbb{R}}
 \newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
 
 \areaset{15cm}{28cm}
@@ -85,6 +86,7 @@ The components of our solution will be designed according to figure (\ref{fig:la
 \end{figure}
 \begin{figure}
 	\centering
+	\resizebox{\textwidth}{!}{%
 	\begin{tikzpicture}
 		\node (se1) at (0,0) [draw, fill=green!20,rectangle,minimum width=9cm, minimum height=2cm] {State estimation};
 		\node (gyro) at (-3.5, -3) [draw=none] {Gyro};
@@ -110,14 +112,13 @@ The components of our solution will be designed according to figure (\ref{fig:la
 		\draw[triangle 60-] (acc2) to +(0,-2);
 		\draw[triangle 60-] (gps2) to +(0,-2);
 		\draw[triangle 60-] (son) to +(0,-2);
-		
 	
 	\node (se1) at (0,6) [draw, fill=green!20, rectangle,minimum width=9cm, minimum height=2cm] {Localization};
 	\node (att2) at (-3.5, 9) [draw=none] {Attidute};
 	\node (rot2) at (-1.25, 9) [draw=none] {Rotation};
-	\node (pos) at (1.25, 9) [draw=none] {Position};
+	\node (pos2) at (1.25, 9) [draw=none] {Position};
 	\node (v) at (3.5, 9) [draw=none] {Velocity};
-	\node (pose) at (7, 6) [draw=none] {Position};
+	\node (pos) at (7, 6) [draw=none] {Position};
 	
 
 	\draw[-triangle 60] (acc) to +(0,2);
@@ -127,17 +128,68 @@ The components of our solution will be designed according to figure (\ref{fig:la
 	\draw[-triangle 60] (gps) to +(0,2);
 	\draw[-triangle 60] (acc) to +(0,2);
 	\draw[-triangle 60] (son) to +(0,2);
-	\draw[triangle 60-] (pose) to +(-2.5,0);
+	\draw[triangle 60-] (pos) to +(-2.5,0);
 	
 	\draw[triangle 60-] (att2) to +(0,-2);
 	\draw[triangle 60-] (rot2) to +(0,-2);
-	\draw[triangle 60-] (pos) to +(0,-2);
+	\draw[triangle 60-] (pos2) to +(0,-2);
 	\draw[triangle 60-] (v) to +(0,-2);
 	
+	\node (pi) at (14,0) [draw, fill=black!15, rectangle,minimum width=9cm, minimum height=2cm] {PI controller};
+	\node (fc) at (14,6) [draw, fill=green!20, rectangle,minimum width=9cm, minimum height=2cm] {Flight controller};
+	\draw[-triangle 60] (pose) to (pi);
+	\draw[-triangle 60] (pos) to (fc);
+	\node (twist) at (14,3) [draw=none] {Twist};
+	\draw[-triangle 60] (fc) to (twist);
+	\draw[-triangle 60] (twist) to (pi);
+	
+	\node (plan) at (7,12) [draw, fill=green!20, rectangle,minimum width=22cm, minimum height=2cm] {Planner};
+	\draw[-triangle 60] (att2) to +(0,2);
+	\draw[-triangle 60] (rot2) to +(0,2);
+	\draw[-triangle 60] (pos2) to +(0,2);
+	\draw[-triangle 60] (v) to +(0,2);
+	
+	\node (ov) at (11,9) [draw=none] {Optimal Velocity};
+	\node (nw) at (17,9) [draw=none] {Next waypoint};
+	\draw[triangle 60-] (nw) to +(0,2);
+	\draw[triangle 60-] (ov) to +(0,2);
+	\draw[-triangle 60] (nw) to +(0,-2);
+	\draw[-triangle 60] (ov) to +(0,-2);
+	
+	\node (sensor) at (0,-6) [draw, fill=black!15,rectangle,minimum width=9cm, minimum height=2cm] {Sensors};
+	\draw[triangle 60-] (gyro) to +(0,-2);
+	\draw[triangle 60-] (acc) to +(0,-2);
+	\draw[triangle 60-] (gps) to +(0,-2);
+	\draw[triangle 60-] (sonar) to +(0,-2);
+	
+	\node (motor) at (14,-6) [draw, fill=black!15,rectangle,minimum width=9cm, minimum height=2cm] {Motors};
+	\node (pwm) at (14,-3) [draw=none] {PWM};
+	\draw[-triangle 60] (pwm) to +(0,-2);
+	\draw[triangle 60-] (pwm) to +(0,2);
 	\end{tikzpicture}
-	\caption{Interfaces of the "state estimation" and "localization" block}
+	}
+	\caption{Interfaces of the control\_system: Gray blocks are already existing, the greens ones have to be implemented}
 	\label{fig:state_est}
 \end{figure}
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}\hline
+		\textbf{Variable} & \textbf{Components} & \textbf{Range}\\\hline
+		Gyro & $\varphi_x, \varphi_y, \varphi_z$ & $\reals \times \reals \times \reals$ \\\hline
+		Acceleration & $a_x, a_y, a_z$ &$\reals \times \reals \times \reals$ \\\hline
+		GPS & $gps_n, gps_e, gps_d$ & $\reals \times \reals \times \reals$ \\\hline
+		Sonar & $s_z$ & $\reals$ \\\hline
+		Rotation & $\omega_x, \omega_y, \omega_z$ & $\reals \times \reals \times \reals$ \\\hline
+		Attitude & $\theta_x, \theta_y, \theta_z$ & $\reals \times \reals \times \reals$ \\\hline
+		Position & $x, y, z$ & $\reals \times \reals \times \reals$ \\\hline
+		Velocity & $v_x, v_y, v_z$ & $\reals \times \reals \times \reals$ \\\hline
+		Optimal Velocity & $v_{opt}$ & $\reals$ \\\hline
+		Next waypoint & $t_x, t_y, t_z$ & $\reals \times \reals \times \reals$ \\\hline
+		Twist & $\psi_x, \psi_y, \psi_z$ & $\reals \times \reals \times \reals$ \\\hline
+	\end{tabular}
+	\caption{Mapping of variables to datatypes}
+	\label{tab:datatypes}
+\end{table}
 The block "state estimation" and "localization" will be implemented as Kalman-filters and have the interfaces as shown in figure (\ref{fig:state_est})
 \FloatBarrier
 \section*{Task schedule}
