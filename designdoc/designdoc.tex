@@ -243,11 +243,14 @@ The \textbf{State estimation} and \textbf{Localization} blocks will be implement
 \subsection*{Planner}
 The planner will consists of two parts: A path-finder and a filter.\\
 As the name already suggests, the path-finder is a path-finding algorithm (e.g. A\textsuperscript{*}) that works on the array of checkpoints and obstacles and finds the shortest trajectory starting from the staring position, passes through all the checkpoints and ends in the target position (last checkpoint). The resulting path may not be differentiable everywhere, i.e. the path might not be \emph{smooth} and contain sharp direction changes. Thus a filter is applied afterwards that smoothen the trajectory such that the quadcopter is able to stay on this path more easily.
+\vspace{0.2cm}\\
+The inputs "Attitude", "Rotation", "Velocity" of the Planner are not essential, but may allow optimization of the planner later in the project.
+The same holds for the "Optimal Velocity" output of the Planner: First this value will not be used, but may enable optimization later.
 \subsection*{Flight controller}
 Dunno how this is implemented.
-\FloatBarrier
 \begin{landscape}
 \section*{Task schedule}
+\resizebox{1.6\textwidth}{!}{%
 \begin{ganttchart}[
 	hgrid,
 	vgrid,
@@ -256,10 +259,40 @@ Dunno how this is implemented.
 	]{2016-11-28}{2017-01-22}
 	14
 	\gantttitlecalendar{year, month=shortname, week=1, weekday=letter} \\
-	\ganttbar{}{2016-11-28}{2017-01-22}\\
-	\ganttbar{Literature research}{2016-11-28}{2016-12-5}\\
+	\ganttbar[bar/.append style={fill=yellow!50}]{Literature research}{2016-11-28}{2016-12-3}\\
+	\ganttbar[bar/.append style={fill=green!20}]{State estimator}{2016-12-5}{2016-12-10}\\
+	\ganttmilestone{Milestone: Estimator}{2016-12-12}\\
+	\ganttbar[bar/.append style={fill=green!20}]{Localization}{2016-12-5}{2016-12-14}\\
+	\ganttmilestone{Minimal solution}{2016-12-23}\\
+	\ganttbar[bar/.append style={fill=orange!20}]{Flight controller}{2016-12-5}{2016-12-21}\\
+	\ganttbar[bar/.append style={fill=blue!20}]{Static planner}{2016-12-11}{2016-12-16}\\
+	\ganttbar[bar/.append style={fill=blue!20}]{Dynamic planner}{2016-12-27}{2017-1-6}\\
+	\ganttbar[bar/.append style={fill=orange!20}]{Optimization}{2016-12-27}{2017-1-11}\\
+	\ganttmilestone{Final solution}{2017-1-13}\\
+	\ganttgroup{Time buffer}{2017-1-14}{2017-1-22}
+	\ganttlink{elem0}{elem1}
+	\ganttlink{elem1}{elem2}
+	\ganttlink{elem0}{elem3}
+	\ganttlink{elem0}{elem5}
+	\ganttlink{elem1}{elem4}
+	\ganttlink{elem3}{elem4}
+	\ganttlink{elem6}{elem4}
+	\ganttlink{elem5}{elem4}
+	\ganttlink{elem6}{elem7}
+	\ganttlink{elem8}{elem9}
+	\ganttlink{elem7}{elem9}
 \end{ganttchart}\\
+}
 \end{landscape}
-
-
+\subsection*{Units of work}
+The units of the task schedule are colored in 4 different colors: The yellow color indicates that this unit of work is done by all the group members. The remaining three colors (green, red and blue) define similar tasks: If a persons is involved in a unit of work of distinct color, then he will also be involved in the other units of work having the same color.
+\subsection*{Milestones}
+There are three milestones in our schedule:
+\begin{description}
+	\item[Milestone: Estimator] At this point we can replace the attitude that is fed directly from the environment into the PI-controller, by an estimated attitude coming from our state estimator.
+	\item[Minimal solution] At this point the quadcopter should be able to satisfy all the main requirements as states in the first section. The trajectory of the quadcopter is statically defined, i.e. it is not possible to change the map or the checkpoints. Also the time the quadcopter needs is not of any interest, i.e. there has been no optimizations for speed done yet.
+	\item[Final solution] At this point all the requirements are satisfied. The trajectory of the quadcopter is computed dynamically, i.e. the quadcopter should be able to find the best path even if a different map and checkpoints are given. The flight controller is also optimization such that the quadcopter is can fly at a relatively high speed.
+\end{description}
+\subsection*{Milestones}
+A time buffer of roughly one and a half week in scheduled, if there occur any kind of delay during the project.
 \end{document}
