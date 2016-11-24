@@ -29,7 +29,52 @@
 \usepackage{placeins}
 \usepackage{latexsym}
 \usepackage{amssymb}
+\usepackage{pgfgantt}
 
+\usepackage{pdflscape} 
+\makeatletter
+\global\let\orig@begin@landscape=\landscape%
+\global\let\orig@end@landscape=\endlandscape%
+\gdef\@true{1}
+\gdef\@false{0}
+\gdef\landscape{%
+	\global\let\within@landscape=\@true%
+	\orig@begin@landscape%
+}%
+\gdef\endlandscape{%
+	\orig@end@landscape%
+	\global\let\within@landscape=\@false%
+}%
+\@ifpackageloaded{pdflscape}{%
+	\gdef\pdf@landscape@rotate{\PLS@Rotate}%
+}{
+	\gdef\pdf@landscape@rotate#1{}%
+}
+\let\latex@outputpage\@outputpage
+\def\@outputpage{
+	\ifx\within@landscape\@true%
+	\if@twoside%
+	\ifodd\c@page%
+	\gdef\LS@rot{\setbox\@outputbox\vbox{%
+			\pdf@landscape@rotate{-90}%
+			\hbox{\rotatebox{90}{\hbox{\rotatebox{180}{\box\@outputbox}}}}}%
+	}%
+	\else%
+	\gdef\LS@rot{\setbox\@outputbox\vbox{%
+			\pdf@landscape@rotate{+90}%
+			\hbox{\rotatebox{90}{\hbox{\rotatebox{0}{\box\@outputbox}}}}}%
+	}%
+	\fi%
+	\else%
+	\gdef\LS@rot{\setbox\@outputbox\vbox{%
+			\pdf@landscape@rotate{+90}%
+			\hbox{\rotatebox{90}{\hbox{\rotatebox{0}{\box\@outputbox}}}}}%
+	}%
+	\fi%
+	\fi%
+	\latex@outputpage%
+}
+\makeatother
 \newcommand{\reals}{\mathbb{R}}
 \newcommand{\vect}[1]{\begin{pmatrix} #1\end{pmatrix}}
 
@@ -201,6 +246,20 @@ As the name already suggests, the path-finder is a path-finding algorithm (e.g. 
 \subsection*{Flight controller}
 Dunno how this is implemented.
 \FloatBarrier
+\begin{landscape}
 \section*{Task schedule}
-	
+\begin{ganttchart}[
+	hgrid,
+	vgrid,
+	x unit=4mm,
+	time slot format=isodate
+	]{2016-11-28}{2017-01-22}
+	14
+	\gantttitlecalendar{year, month=shortname, week=1, weekday=letter} \\
+	\ganttbar{}{2016-11-28}{2017-01-22}\\
+	\ganttbar{Literature research}{2016-11-28}{2016-12-5}\\
+\end{ganttchart}\\
+\end{landscape}
+
+
 \end{document}
