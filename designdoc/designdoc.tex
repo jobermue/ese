@@ -87,10 +87,10 @@
 \author{
 	\authorname{Mathias Lechner, Benjamin Binder} \\
 	\authorname{Johannes Obermüller, Lukas Hartung} \\
-	\studentnumber{1225134, 1226121, 1126799} \\
+	\studentnumber{1225134, 1226121, 1126799, 1128025} \\
 	\curriculum{066 938}\\
 	\email{e1225134@student.tuwien.ac.at, e1226121@student.tuwien.ac.at}\\
-	\email{e1126799@student.tuwien.ac.at}\\\\
+	\email{e1126799@student.tuwien.ac.at, e1128025@student.tuwien.ac.at}\\\\
 }
 \date{\today}
 
@@ -247,7 +247,18 @@ As the name already suggests, the path-finder is a path-finding algorithm (e.g. 
 The inputs "Attitude", "Rotation", "Velocity" of the Planner are not essential, but may allow optimization of the planner later in the project.
 The same holds for the "Optimal Velocity" output of the Planner: First this value will not be used, but may enable optimization later.
 \subsection*{Flight controller}
-Dunno how this is implemented.
+We plan to split the controller into two subcomponents: one controlling z-position by setting the thrust, another one controlling x and y by setting $\phi$ and $\theta$.
+
+In a first attempt we will implement the flight controller as a simple PID controller and perform the parameter tuning using the Ziegler-Nichols method.
+A next step will be to set the parameters of the PID controller based on a model of the quadcopter.
+
+Further possible improvements:
+\begin{itemize}
+\item pre-computed optimal path control
+\item model predictive controller
+\item adaptive fuzzy controller
+\end{itemize}
+
 \begin{landscape}
 \section*{Task schedule}
 \resizebox{1.6\textwidth}{!}{%
@@ -265,7 +276,7 @@ Dunno how this is implemented.
 	\ganttbar[bar/.append style={fill=green!20}]{Localization}{2016-12-5}{2016-12-14}\\
 	\ganttmilestone{Minimal solution}{2016-12-23}\\
 	\ganttbar[bar/.append style={fill=orange!20}]{Flight controller}{2016-12-5}{2016-12-21}\\
-	\ganttbar[bar/.append style={fill=blue!20}]{Static planner}{2016-12-11}{2016-12-16}\\
+	\ganttbar[bar/.append style={fill=blue!20}]{Static planner}{2016-12-5}{2016-12-11}\\
 	\ganttbar[bar/.append style={fill=blue!20}]{Dynamic planner}{2016-12-27}{2017-1-6}\\
 	\ganttbar[bar/.append style={fill=orange!20}]{Optimization}{2016-12-27}{2017-1-11}\\
 	\ganttmilestone{Final solution}{2017-1-13}\\
@@ -295,4 +306,20 @@ There are three milestones in our schedule:
 \end{description}
 \subsection*{Milestones}
 A time buffer of roughly one and a half week in scheduled, if there occur any kind of delay during the project.
+
+\subsection*{Group Member Assignment}
+
+Mathias, Lukas:
+path planner, flight controller\\
+
+\noindent
+Benjamin, Johannes:
+state estimator, localization
+
+
+
+
+
+
+
 \end{document}
